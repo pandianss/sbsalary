@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IOB Salary Accounts Portal</title>
+<style>
+:root{
+  --navy:#0b2a5b; --navy2:#123f86; --sky:#e8f1fb; --ink:#14213d; --muted:#5b6b86; --line:#dbe3ef; --bg:#f6f8fc; --card:#ffffff;
+  --gold:#c98f12; --gold-bg:#fff6dc; --dia:#1b8bd1; --dia-bg:#e3f3fd; --plat:#6a4fd6; --plat-bg:#eee9ff;
+  --prem:#0f172a; --prem-bg:#e6e9f1; --prem-th:#0f172a; --ok:#157a4b; --warn:#b4540a; --warn-bg:#fff1e3; --radius:18px;
+  --shadow:0 10px 30px rgba(11,42,91,.10);
+}
+@media (prefers-color-scheme:dark){
+  :root{--navy:#9cc0ff; --navy2:#6ea4ff; --sky:#16243d; --ink:#e8eefb; --muted:#9fb0cd; --line:#26364f; --bg:#0c1424; --card:#121d33;
+  --prem:#cbd5e1; --prem-bg:#1d263b; --prem-th:#334155; --gold-bg:#3a2d0c; --dia-bg:#0f2a3d; --plat-bg:#241f4a; --warn-bg:#3a2210; --shadow:0 10px 30px rgba(0,0,0,.35)}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+h1,h2,h3{line-height:1.2;margin:0}
+section{padding:64px 0}
+.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--navy2);margin-bottom:8px}
+.sec-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;color:var(--ink)}
+.sec-sub{color:var(--muted);max-width:720px;margin:10px 0 28px}
+
+/* nav */
+header.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:20px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--navy);text-decoration:none}
+.logo{height:42px;width:auto;display:block}
+.brand small{display:block;font-weight:500;color:var(--muted);font-size:.7rem;margin-top:-2px}
+.nav nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+.nav nav a{padding:8px 12px;border-radius:999px;text-decoration:none;font-size:.9rem;color:var(--muted);font-weight:600}
+.nav nav a:hover,.nav nav a.on{background:var(--sky);color:var(--navy)}
+@media(max-width:900px){.nav nav{display:none}}
+
+/* hero */
+.hero{background:linear-gradient(135deg,#0b2a5b 0%,#123f86 55%,#1b6fd1 100%);color:#fff;padding:56px 0 0;overflow:hidden;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:20px;align-items:center}
+.pill{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:600}
+.hero h1{font-size:clamp(2rem,4.4vw,3.3rem);font-weight:800;margin:18px 0 14px;letter-spacing:-.02em}
+.hero h1 span{color:#ffd166}
+.hero p.lead{font-size:1.1rem;opacity:.92;max-width:520px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 30px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-size:.95rem;font-family:inherit}
+.btn.gold{background:#ffd166;color:#3a2a00}.btn.ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.btn.blue{background:var(--navy2);color:#fff}
+.stats{display:flex;gap:26px;flex-wrap:wrap;padding-bottom:36px}
+.stats b{display:block;font-size:1.7rem}.stats span{font-size:.82rem;opacity:.85}
+.hero-art{align-self:end}
+.hero-art svg{width:100%;height:auto;display:block}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}.hero-art{max-width:560px;margin:0 auto}}
+.ticker{background:#071d42;color:#cfe0ff;font-size:.85rem;padding:10px 0;border-top:1px solid rgba(255,255,255,.1)}
+.ticker .wrap{display:flex;gap:12px;align-items:center;grid-template-columns:none}
+.ticker b{color:#ffd166}
+
+/* tiers */
+.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:1100px){.tiers{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.tiers{grid-template-columns:1fr}}
+.tier{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;transition:transform .2s}
+.tier:hover{transform:translateY(-4px)}
+.tier .top{padding:22px 22px 0;display:flex;gap:14px;align-items:center}
+.tier .top svg{width:72px;height:72px;flex:none}
+.tier .code{font-size:.72rem;font-weight:700;letter-spacing:.1em;padding:3px 9px;border-radius:99px;display:inline-block}
+.tier h3{font-size:1.4rem;margin-top:6px}
+.tier .band{margin:16px 22px 0;padding:12px 14px;border-radius:12px;font-weight:700}
+.tier .band small{display:block;font-weight:500;opacity:.8}
+.tier ul{list-style:none;margin:14px 22px 20px;padding:0;display:grid;gap:9px;flex:1}
+.tier li{position:relative;padding-left:28px;font-size:.93rem}
+.tier li svg{position:absolute;left:0;top:3px;width:18px;height:18px}
+.tier.prem{border-top:5px solid var(--prem-th)}
+.prem .code,.prem .band{background:var(--prem-bg);color:var(--prem)}
+.prem li svg{color:var(--prem)}
+th.x{background:var(--prem-th)}
+.tier.gold{border-top:5px solid var(--gold)}.tier.dia{border-top:5px solid var(--dia)}.tier.plat{border-top:5px solid var(--plat)}
+.gold .code,.gold .band{background:var(--gold-bg);color:var(--gold)}
+.dia .code,.dia .band{background:var(--dia-bg);color:var(--dia)}
+.plat .code,.plat .band{background:var(--plat-bg);color:var(--plat)}
+.gold li svg{color:var(--gold)}.dia li svg{color:var(--dia)}.plat li svg{color:var(--plat)}
+.tier .foot{padding:0 22px 22px}
+.tier .foot button{width:100%}
+.pick{background:var(--sky);color:var(--navy);}
+
+/* finder */
+.finder{background:linear-gradient(135deg,var(--sky),transparent);}
+.finder-box{display:grid;grid-template-columns:1fr 1.1fr;gap:28px;background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:30px;border:1px solid var(--line)}
+@media(max-width:900px){.finder-box{grid-template-columns:1fr}}
+.finder label{font-weight:700;display:block;margin-bottom:8px}
+.money{display:flex;align-items:center;border:2px solid var(--line);border-radius:14px;padding:6px 14px;background:var(--bg);font-size:1.4rem;font-weight:700}
+.money:focus-within{border-color:var(--navy2)}
+.money input{border:0;background:transparent;font:inherit;color:inherit;width:100%;outline:none;padding:8px 6px}
+input[type=range]{width:100%;margin:18px 0 6px;accent-color:var(--navy2)}
+.scale{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted)}
+.result{border-radius:18px;padding:22px;min-height:230px;transition:background .3s}
+.result h3{font-size:1.5rem;margin:8px 0}
+.result .chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{background:rgba(255,255,255,.65);color:#1c2540;border-radius:99px;padding:5px 12px;font-size:.82rem;font-weight:600}
+.result .nudge{font-size:.9rem;margin-top:10px;font-weight:600}
+
+/* compare */
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:var(--card);color:var(--muted);padding:8px 16px;border-radius:999px;font-weight:600;cursor:pointer;font-family:inherit;font-size:.88rem}
+.tab.on{background:var(--navy2);color:#fff;border-color:var(--navy2)}
+.search{margin-left:auto;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;min-width:240px}
+.search input{border:0;background:transparent;outline:none;font:inherit;color:inherit;width:100%}
+.tbl-wrap{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow);overflow:auto;max-height:78vh}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:940px;font-size:.92rem}
+th,td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{position:sticky;top:0;z-index:2;color:#fff;font-size:.95rem}
+thead th:first-child{background:var(--navy2)}
+th.g{background:var(--gold)}th.d{background:var(--dia)}th.p{background:var(--plat)}
+td.f{font-weight:600;width:26%}
+td.span{text-align:center;background:var(--sky)}
+tr.cat td{background:var(--sky);font-weight:800;color:var(--navy);letter-spacing:.04em;font-size:.8rem;text-transform:uppercase}
+tr:hover td:not(.span){background:color-mix(in srgb,var(--sky) 55%,transparent)}
+.na{color:var(--muted)}
+.empty{padding:26px;text-align:center;color:var(--muted)}
+mark{background:#ffe58a;color:#000;border-radius:3px}
+
+/* perks */
+.perks{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.perk{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);padding:22px;box-shadow:var(--shadow)}
+.perk .ic{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;margin-bottom:14px}
+.perk .ic svg{width:34px;height:34px}
+.perk h3{font-size:1.1rem;margin-bottom:6px}
+.perk p{margin:0;color:var(--muted);font-size:.92rem}
+.perk .tag{display:inline-block;margin-top:12px;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--sky);color:var(--navy)}
+
+/* lifestyle band */
+.life{background:linear-gradient(120deg,#2a1a6e,#6a4fd6);color:#fff;border-radius:28px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;padding:34px;overflow:hidden}
+@media(max-width:900px){.life{grid-template-columns:1fr}}
+.life h2{font-size:1.8rem;margin:8px 0 10px}
+.life ul{list-style:none;padding:0;margin:16px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.life li{background:rgba(255,255,255,.12);border-radius:14px;padding:12px 14px;font-size:.9rem}
+.life li b{display:block}
+
+/* rules */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.rule{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);padding:22px 24px;display:flex;gap:16px;box-shadow:var(--shadow)}
+.rule .n{flex:none;width:42px;height:42px;border-radius:12px;background:var(--warn-bg);color:var(--warn);display:grid;place-items:center;font-weight:800}
+.rule h3{font-size:1.05rem;margin-bottom:4px}.rule p{margin:0;color:var(--muted);font-size:.92rem}
+.alert{margin-top:26px;background:var(--warn-bg);border:1px solid color-mix(in srgb,var(--warn) 40%,transparent);border-radius:var(--radius);padding:18px 22px;display:flex;gap:14px}
+.alert svg{flex:none;width:28px;height:28px;color:var(--warn)}
+
+/* lifecycle */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;counter-reset:s}
+@media(max-width:900px){.flow{grid-template-columns:1fr}}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;position:relative;box-shadow:var(--shadow)}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-14px;left:16px;background:var(--navy2);color:#fff;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.85rem}
+.step h3{font-size:1rem;margin:6px 0 4px}.step p{margin:0;font-size:.86rem;color:var(--muted)}
+
+/* migration */
+.mig{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.mig .m{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.mig .from{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.mig .from span{background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:2px 8px;font-size:.8rem;font-weight:700;color:var(--muted)}
+.mig .arrow{color:var(--navy2);font-weight:800}
+
+/* circulars */
+.circs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.circ{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.circ .doc{height:128px;background:linear-gradient(135deg,var(--sky),var(--card));display:grid;place-items:center;border-bottom:1px solid var(--line)}
+.circ .body{padding:18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.circ .ref{font-size:.76rem;font-weight:700;color:var(--navy2)}
+.circ h3{font-size:1.02rem}.circ p{margin:0;color:var(--muted);font-size:.88rem;flex:1}
+.circ .status{font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:99px;align-self:flex-start}
+.status.cur{background:#dff5e8;color:var(--ok)}.status.old{background:var(--warn-bg);color:var(--warn)}
+.circ a.btn{margin-top:10px;justify-content:center;padding:9px 16px;font-size:.88rem}
+@media(prefers-color-scheme:dark){.status.cur{background:#10301f}}
+
+/* faq */
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;padding:0 20px}
+summary{cursor:pointer;font-weight:700;padding:16px 0;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::after{content:"+";font-size:1.4rem;color:var(--navy2);line-height:1}
+details[open] summary::after{content:"\2212"}
+details p{margin:0 0 16px;color:var(--muted)}
+
+footer{background:#071d42;color:#b7c7e6;padding:34px 0;font-size:.88rem}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.lightbox{position:fixed;inset:0;background:rgba(5,12,28,.82);display:none;place-items:center;z-index:100;padding:20px}
+.lightbox.on{display:grid}
+.lightbox img{max-height:92vh;max-width:100%;border-radius:10px;background:#fff}
+.lightbox button{position:absolute;top:16px;right:20px}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+.float{animation:fl 6s ease-in-out infinite}.float.b{animation-delay:-2s}.float.c{animation-delay:-4s}
+@keyframes fl{50%{transform:translateY(-10px)}}
+@media print{header.nav,.hero-art,.tools,.cta,.finder,.lightbox,.ticker{display:none!important}section{padding:20px 0}.reveal{opacity:1;transform:none}.tbl-wrap{max-height:none;box-shadow:none}.hero{background:#fff;color:#000}.hero h1 span{color:#000}}
+</style>
+</head>
+<body>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".16"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3z" fill="currentColor" opacity=".18"/><path d="M12 3l10 18H2L12 3zM12 10v5M12 18v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 48 48"><path d="M24 4l16 6v12c0 11-7 18-16 22C15 40 8 33 8 22V10l16-6z" fill="currentColor" opacity=".18"/><path d="M24 4l16 6v12c0 11-7 18-16 22C15 40 8 33 8 22V10l16-6z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M17 24l5 5 9-10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-card" viewBox="0 0 48 48"><rect x="4" y="10" width="40" height="28" rx="5" fill="currentColor" opacity=".18"/><rect x="4" y="10" width="40" height="28" rx="5" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M4 19h40" stroke="currentColor" stroke-width="5"/><rect x="10" y="28" width="12" height="4" rx="2" fill="currentColor"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 48 48"><path d="M44 8L6 22l12 5 5 12 7-9 8 6L44 8z" fill="currentColor" opacity=".18"/><path d="M44 8L6 22l12 5 5 12 7-9 8 6L44 8zM18 27l26-19" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-home" viewBox="0 0 48 48"><path d="M6 23L24 7l18 16v18H6V23z" fill="currentColor" opacity=".18"/><path d="M6 23L24 7l18 16M12 20v21h24V20M20 41V29h8v12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-family" viewBox="0 0 48 48"><circle cx="15" cy="14" r="6" fill="currentColor" opacity=".25"/><circle cx="33" cy="14" r="6" fill="currentColor" opacity=".25"/><circle cx="24" cy="26" r="4.5" fill="currentColor" opacity=".25"/><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="15" cy="14" r="6"/><circle cx="33" cy="14" r="6"/><circle cx="24" cy="26" r="4.5"/><path d="M5 40c0-7 4-11 10-11M43 40c0-7-4-11-10-11M15 42c0-6 3-9 9-9s9 3 9 9"/></g></symbol>
+  <symbol id="i-wallet" viewBox="0 0 48 48"><rect x="4" y="12" width="40" height="28" rx="6" fill="currentColor" opacity=".18"/><path d="M8 12l26-6v6M4 18a6 6 0 016-6h28a6 6 0 016 6v16a6 6 0 01-6 6H10a6 6 0 01-6-6V18z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><circle cx="34" cy="26" r="3" fill="currentColor"/></symbol>
+  <symbol id="i-key" viewBox="0 0 48 48"><rect x="6" y="18" width="36" height="24" rx="4" fill="currentColor" opacity=".18"/><path d="M14 18v-5a10 10 0 0120 0v5M6 22a4 4 0 014-4h28a4 4 0 014 4v16a4 4 0 01-4 4H10a4 4 0 01-4-4V22z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><circle cx="24" cy="30" r="3" fill="currentColor"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 48 48"><path d="M27 3L9 27h13l-3 18 20-26H26l1-16z" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-pct" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="currentColor" opacity=".18"/><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M32 16L16 32" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="17" cy="17" r="3.5" fill="currentColor"/><circle cx="31" cy="31" r="3.5" fill="currentColor"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 48 48"><path d="M12 4h17l9 9v31H12V4z" fill="currentColor" opacity=".16"/><path d="M12 4h17l9 9v31H12V4zM29 4v9h9M18 22h14M18 29h14M18 36h9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-run" viewBox="0 0 48 48"><path d="M6 20v8M12 14v20M36 14v20M42 20v8M12 24h24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></symbol>
+  <symbol id="i-golf" viewBox="0 0 48 48"><path d="M16 42V6l14 7-14 7" fill="currentColor" opacity=".2"/><path d="M16 42V6l14 7-14 7M8 42h24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="38" cy="38" r="4" fill="currentColor"/></symbol>
+  <symbol id="i-spa" viewBox="0 0 48 48"><path d="M24 6c6 6 9 12 0 22-9-10-6-16 0-22z" fill="currentColor" opacity=".2"/><path d="M24 6c6 6 9 12 0 22-9-10-6-16 0-22zM6 24c8 0 14 4 18 12M42 24c-8 0-14 4-18 12M8 40h32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 48 48"><path d="M24 42S6 31 6 18a9 9 0 0118-4 9 9 0 0118 4c0 13-18 24-18 24z" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M12 24h8l3-6 4 10 3-4h6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 48 48"><path d="M4 8h18l22 22-14 14L8 22 4 8z" fill="currentColor" opacity=".2" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><circle cx="14" cy="16" r="3" fill="currentColor"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-logo" viewBox="0 0 48 48"><path d="M24 3L4 24l20 21 20-21L24 3z" fill="#ffd166"/><path d="M24 9L10 24l14 15 14-15L24 9z" fill="#0b2a5b"/><path d="M24 15l-8 9 8 9 8-9-8-9z" fill="#ffd166"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <img src="assets/iob-logo.svg" alt="Indian Overseas Bank" class="logo">
+      <span>IOB Salary Accounts<small>Internal staff portal &middot; Planning Dept. circulars</small></span>
+    </a>
+    <nav id="menu">
+      <a href="#tiers">Variants</a><a href="#finder">Find a variant</a><a href="#compare">Compare</a><a href="#perks">Highlights</a>
+      <a href="#rules">Key rules</a><a href="#migrate">Old &rarr; New</a><a href="#circulars">Circulars</a><a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <span class="pill">&#9679; For internal circulation &mdash; Branches / Regional Offices</span>
+      <h1>One salary package.<br><span>Four ways to shine.</span></h1>
+      <p class="lead">Everything staff need to canvass the <b>IOB Salary Account</b> &mdash; Gold, Diamond, Platinum and the new Premium &mdash; with features, limits, concessions and operating rules, aligned with circular Dep/15/2025-26 and the bank's website (updated 19.10.2026).</p>
+      <div class="cta">
+        <a class="btn gold" href="#finder">Find the right variant</a>
+        <a class="btn ghost" href="#compare">Compare all 47 features</a>
+      </div>
+      <div class="stats">
+        <div><b>4</b><span>variants by net salary</span></div>
+        <div><b>₹0</b><span>minimum balance</span></div>
+        <div><b>₹1 Cr</b><span>free accident cover (Premium)</span></div>
+        <div><b>5 &rarr; 1</b><span>old schemes merged into Gold</span></div>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="gc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe29a"/><stop offset="1" stop-color="#c98f12"/></linearGradient>
+          <linearGradient id="dc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fd6ff"/><stop offset="1" stop-color="#1b8bd1"/></linearGradient>
+          <linearGradient id="pc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9a8ff"/><stop offset="1" stop-color="#5a3fd0"/></linearGradient>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".18"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
+        </defs>
+        <circle cx="300" cy="190" r="170" fill="url(#sky)"/>
+        <circle cx="300" cy="190" r="120" fill="#fff" opacity=".06"/>
+        <!-- skyline -->
+        <g fill="#0a2350" opacity=".55">
+          <rect x="20" y="250" width="50" height="170"/><rect x="76" y="210" width="42" height="210"/><rect x="124" y="270" width="56" height="150"/>
+          <rect x="400" y="230" width="48" height="190"/><rect x="454" y="190" width="40" height="230"/><rect x="500" y="260" width="50" height="160"/>
+        </g>
+        <g fill="#ffd166" opacity=".7">
+          <rect x="30" y="268" width="6" height="8"/><rect x="46" y="268" width="6" height="8"/><rect x="30" y="288" width="6" height="8"/><rect x="86" y="228" width="6" height="8"/><rect x="102" y="248" width="6" height="8"/>
+          <rect x="412" y="250" width="6" height="8"/><rect x="428" y="270" width="6" height="8"/><rect x="466" y="212" width="6" height="8"/><rect x="480" y="232" width="6" height="8"/><rect x="512" y="280" width="6" height="8"/>
+        </g>
+        <!-- platinum card -->
+        <g class="float c" transform="rotate(-8 400 120)">
+          <rect x="300" y="60" width="210" height="130" rx="16" fill="url(#pc)"/>
+          <rect x="300" y="86" width="210" height="22" fill="#2a1a6e" opacity=".55"/>
+          <rect x="318" y="130" width="40" height="28" rx="5" fill="#ffd166"/>
+          <text x="318" y="178" fill="#fff" font-size="12" font-weight="700" font-family="Segoe UI,Arial">PLATINUM</text>
+          <circle cx="474" cy="162" r="14" fill="#fff" opacity=".35"/><circle cx="488" cy="162" r="14" fill="#fff" opacity=".35"/>
+        </g>
+        <!-- diamond card -->
+        <g class="float b" transform="rotate(5 230 190)">
+          <rect x="120" y="140" width="210" height="130" rx="16" fill="url(#dc)"/>
+          <rect x="120" y="166" width="210" height="22" fill="#0b3a6b" opacity=".45"/>
+          <rect x="138" y="210" width="40" height="28" rx="5" fill="#ffe29a"/>
+          <text x="138" y="258" fill="#fff" font-size="12" font-weight="700" font-family="Segoe UI,Arial">DIAMOND</text>
+          <circle cx="294" cy="242" r="14" fill="#fff" opacity=".35"/><circle cx="308" cy="242" r="14" fill="#fff" opacity=".35"/>
+        </g>
+        <!-- gold card -->
+        <g class="float" transform="rotate(-3 200 300)">
+          <rect x="70" y="230" width="210" height="130" rx="16" fill="url(#gc)"/>
+          <rect x="70" y="256" width="210" height="22" fill="#7a5300" opacity=".4"/>
+          <rect x="88" y="300" width="40" height="28" rx="5" fill="#fff6dc"/>
+          <text x="88" y="348" fill="#5a3b00" font-size="12" font-weight="700" font-family="Segoe UI,Arial">GOLD</text>
+        </g>
+        <g class="float c" transform="rotate(7 430 260)">
+          <rect x="335" y="205" width="190" height="118" rx="15" fill="#111827"/>
+          <rect x="335" y="228" width="190" height="20" fill="#000" opacity=".5"/>
+          <rect x="351" y="268" width="36" height="26" rx="5" fill="#ffd166"/>
+          <text x="351" y="312" fill="#ffd166" font-size="12" font-weight="700" font-family="Segoe UI,Arial" letter-spacing="1">PREMIUM</text>
+        </g>
+        <!-- coins -->
+        <g class="float b"><circle cx="360" cy="330" r="26" fill="#ffd166"/><circle cx="360" cy="330" r="19" fill="none" stroke="#b9831a" stroke-width="3"/><text x="360" y="338" text-anchor="middle" font-size="22" font-weight="800" fill="#8a5a00" font-family="Segoe UI,Arial">₹</text></g>
+        <g class="float"><circle cx="410" cy="360" r="20" fill="#ffd166"/><circle cx="410" cy="360" r="14" fill="none" stroke="#b9831a" stroke-width="3"/><text x="410" y="367" text-anchor="middle" font-size="17" font-weight="800" fill="#8a5a00" font-family="Segoe UI,Arial">₹</text></g>
+        <!-- shield -->
+        <g class="float c" transform="translate(445 285)"><path d="M0 0l32 12v26c0 20-14 34-32 40C-18 72-32 58-32 38V12L0 0z" transform="translate(0 0)" fill="#1fbf8a"/><path d="M-14 32l10 10 22-24" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></g>
+        <!-- plane -->
+        <g class="float b" transform="translate(70 70) rotate(-12)"><path d="M0 24L64 0 44 44 30 30 18 40 12 26z" fill="#fff"/><path d="M30 30L64 0" stroke="#9cc0ff" stroke-width="2"/></g>
+        <!-- sparkles -->
+        <g fill="#fff"><path d="M250 50l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/><path d="M540 120l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" opacity=".8"/><path d="M40 160l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" opacity=".8"/></g>
+      </svg>
+    </div>
+  </div>
+  <div class="ticker"><div class="wrap"><b>LATEST</b> Circular Dep/15/2025-26 (18.09.2025): new <u>IOB PREMIUM</u> variant for net salary above ₹1.5 lakh, with ₹100 lakh accident cover. Gold/Diamond/Platinum revised from 01.11.2025.</div></div>
+</div>
+
+<!-- TIERS -->
+<section id="tiers">
+  <div class="wrap">
+    <div class="eyebrow reveal">The package</div>
+    <h2 class="sec-title reveal">Pick the variant by customer's net salary</h2>
+    <p class="sec-sub reveal">Based on the average <b>net salary</b> of the last 3 months. IOB Premium (SBCSP) is the corporate salary scheme for the high-income segment. Regular employees of Central/State Government, PSUs, Government&ndash;Semi Government corporations, MNCs, reputed institutions, corporates and educational institutions, aged 18&ndash;65.</p>
+
+    <div class="tiers">
+      <article class="tier gold reveal">
+        <div class="top">
+          <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="32" fill="#fff6dc"/><path d="M36 10l7 15 16 2-12 11 3 16-14-8-14 8 3-16L13 27l16-2z" fill="url(#gc2)" stroke="#c98f12" stroke-width="2" stroke-linejoin="round"/><defs><linearGradient id="gc2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe29a"/><stop offset="1" stop-color="#e0a82a"/></linearGradient></defs></svg>
+          <div><span class="code">SBCRP</span><h3>Gold</h3></div>
+        </div>
+        <div class="band">₹10,000 up to ₹25,000<small>net salary per month (avg. of last 3 months)</small></div>
+        <ul>
+          <li><svg><use href="#i-check"/></svg><b>VISA Platinum / RuPay Platinum</b> debit card (issue &amp; AMC charged)</li>
+          <li><svg><use href="#i-check"/></svg>Free accident cover <b>&nbsp;₹20 lakh</b></li>
+          <li><svg><use href="#i-check"/></svg>Overdraft: 1 month net salary, up to ₹50,000</li>
+          <li><svg><use href="#i-check"/></svg>Zero-balance family accounts: spouse + 1 child</li>
+          <li><svg><use href="#i-check"/></svg>50% off processing fee on home (&lt;₹25 L) &amp; retail loans; free hospital cash</li>
+        </ul>
+        <div class="foot"><button class="btn pick" data-tier="g">See all Gold features</button></div>
+      </article>
+
+      <article class="tier dia reveal">
+        <div class="top">
+          <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="32" fill="#e3f3fd"/><path d="M18 28l8-10h20l8 10-18 26z" fill="url(#dc2)" stroke="#1b8bd1" stroke-width="2" stroke-linejoin="round"/><path d="M18 28h36M26 18l10 36 10-36" fill="none" stroke="#fff" stroke-width="2" opacity=".8"/><defs><linearGradient id="dc2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a6e0ff"/><stop offset="1" stop-color="#1b8bd1"/></linearGradient></defs></svg>
+          <div><span class="code">SBDMD</span><h3>Diamond</h3></div>
+        </div>
+        <div class="band">Above ₹25,000 up to ₹75,000<small>net salary per month (avg. of last 3 months)</small></div>
+        <ul>
+          <li><svg><use href="#i-check"/></svg><b>VISA Signature / RuPay Select</b> card free, plus lifestyle perks</li>
+          <li><svg><use href="#i-check"/></svg>Free accident cover <b>&nbsp;₹30 lakh</b></li>
+          <li><svg><use href="#i-check"/></svg>Overdraft: 2 months net salary, up to ₹1 lakh</li>
+          <li><svg><use href="#i-check"/></svg>Zero-balance family accounts: spouse + 2 children</li>
+          <li><svg><use href="#i-check"/></svg>Free NEFT/RTGS/IMPS &middot; 75% off processing fee &middot; 50% credit-card AMC waiver</li>
+        </ul>
+        <div class="foot"><button class="btn pick" data-tier="d">See all Diamond features</button></div>
+      </article>
+
+      <article class="tier plat reveal">
+        <div class="top">
+          <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="32" fill="#eee9ff"/><path d="M36 10l22 10v14c0 14-9 22-22 28C23 56 14 48 14 34V20z" fill="url(#pc2)" stroke="#5a3fd0" stroke-width="2" stroke-linejoin="round"/><path d="M26 36l7 7 13-15" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="pc2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c3b5ff"/><stop offset="1" stop-color="#5a3fd0"/></linearGradient></defs></svg>
+          <div><span class="code">SBPTM</span><h3>Platinum</h3></div>
+        </div>
+        <div class="band">Above ₹75,000 up to ₹1,50,000<small>net salary per month (avg. of last 3 months)</small></div>
+        <ul>
+          <li><svg><use href="#i-check"/></svg><b>VISA Signature / RuPay Select</b> free &mdash; 10 free other-bank ATM txns/month</li>
+          <li><svg><use href="#i-check"/></svg>Free accident cover <b>&nbsp;₹40 lakh</b></li>
+          <li><svg><use href="#i-check"/></svg>Overdraft: 3 months net salary, up to ₹2 lakh</li>
+          <li><svg><use href="#i-check"/></svg>Free credit card issuance <b>&amp; AMC</b>; 100 free cheque leaves</li>
+          <li><svg><use href="#i-check"/></svg>100% processing-fee concession &middot; 0.05&ndash;0.10% off loan rate &middot; 25% locker waiver</li>
+        </ul>
+        <div class="foot"><button class="btn pick" data-tier="p">See all Platinum features</button></div>
+      </article>
+
+      <article class="tier prem reveal">
+        <div class="top">
+          <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="32" fill="#e6e9f1"/><path d="M16 50l-3-24 13 10 10-18 10 18 13-10-3 24z" fill="#0f172a" stroke="#ffd166" stroke-width="2.5" stroke-linejoin="round"/><circle cx="13" cy="26" r="3.5" fill="#ffd166"/><circle cx="36" cy="18" r="3.5" fill="#ffd166"/><circle cx="59" cy="26" r="3.5" fill="#ffd166"/><rect x="16" y="52" width="40" height="5" rx="2" fill="#ffd166"/></svg>
+          <div><span class="code">SBCSP</span><h3>IOB Premium</h3></div>
+        </div>
+        <div class="band">Above ₹1,50,000<small>net salary per month (avg. of last 3 months), confirmed employees</small></div>
+        <ul>
+          <li><svg><use href="#i-check"/></svg>Free accident cover <b>₹100 lakh</b> incl. air accident (Death + TPD)</li>
+          <li><svg><use href="#i-check"/></svg>Free hospital cash <b>₹3,000/day</b> (up to ₹30,000 a year) &amp; cyber insurance <b>₹1.25 lakh</b></li>
+          <li><svg><use href="#i-check"/></svg>Overdraft: <b>4&times; net salary</b>, up to ₹4 lakh</li>
+          <li><svg><use href="#i-check"/></svg>Highest-variant debit card free; 15 free own-bank &amp; 10 other-bank ATM txns</li>
+          <li><svg><use href="#i-check"/></svg>Zero-balance family accounts for up to 4 members; doorstep banking</li>
+          <li><svg><use href="#i-check"/></svg>100% processing-fee concession &middot; loan rate up to 0.25% off</li>
+        </ul>
+        <div class="foot"><button class="btn pick" data-tier="x">See all Premium features</button></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FINDER -->
+<section id="finder" class="finder">
+  <div class="wrap">
+    <div class="eyebrow reveal">Quick pitch tool</div>
+    <h2 class="sec-title reveal">Which variant fits this customer?</h2>
+    <p class="sec-sub reveal">Enter the average net salary of the last 3 months. Use it at the counter to explain the right variant, and what the next one up unlocks.</p>
+    <div class="finder-box reveal">
+      <div>
+        <label for="sal">Average net salary / month</label>
+        <div class="money"><span>₹</span><input id="sal" type="number" min="0" step="500" value="65000" inputmode="numeric"></div>
+        <input id="slider" type="range" min="0" max="200000" step="1000" value="65000" aria-label="Gross salary slider">
+        <div class="scale"><span>₹0</span><span>₹25k</span><span>₹75k</span><span>₹1.5 L</span><span>₹2 L</span></div>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:18px">Eligibility also needs: age 18&ndash;65, regular employee of an eligible employer, and a salary mandate from the employer.</p>
+      </div>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section id="compare">
+  <div class="wrap">
+    <div class="eyebrow reveal">Per IOB website, side by side</div>
+    <h2 class="sec-title reveal">Compare every feature</h2>
+    <p class="sec-sub reveal">Source: IOB website, Salary Account page (updated 19.10.2026). Filter by category or search (try "lounge", "overdraft", "locker"). Where all three variants are the same, the cell is merged.</p>
+    <div class="tools reveal">
+      <div class="tabs" id="tabs"></div>
+      <label class="search"><svg width="18" height="18"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Search features…" aria-label="Search features"></label>
+    </div>
+    <div class="tbl-wrap reveal"><table id="tbl"><thead><tr><th>Feature</th><th class="g">Gold</th><th class="d">Diamond</th><th class="p">Platinum</th><th class="x">Premium</th></tr></thead><tbody></tbody></table></div>
+    <p style="color:var(--muted);font-size:.82rem;margin-top:10px">Service charges exclude applicable GST. Card network benefits (lounge, accident insurance with debit card) are subject to change by NPCI / VISA / RuPay &mdash; direct customers to the card provider's website for current terms.</p>
+  </div>
+</section>
+
+<!-- PERKS -->
+<section id="perks" style="background:var(--sky)">
+  <div class="wrap">
+    <div class="eyebrow reveal">Talking points</div>
+    <h2 class="sec-title reveal">Highlights that win salary customers</h2>
+    <p class="sec-sub reveal">The features that set the revamped package apart &mdash; lead the conversation with these.</p>
+    <div class="perks">
+      <div class="perk reveal"><div class="ic" style="background:var(--dia-bg);color:var(--dia)"><svg><use href="#i-key"/></svg></div><h3>My Account My Name</h3><p>Customers pick an alias (7 letters, 7 numbers or 7 alphanumerics, e.g. MANO007) to share instead of a 15-digit account number. First in the banking industry.</p><span class="tag">Salary &amp; SB HNI only</span></div>
+      <div class="perk reveal"><div class="ic" style="background:#e1f6ec;color:var(--ok)"><svg><use href="#i-shield"/></svg></div><h3>Free accident cover up to ₹1 crore</h3><p>Cover with the account: ₹20 L / ₹30 L / ₹40 L (Death + PPD &amp; TPD) and ₹100 L for Premium (incl. air accident), plus free hospital cash for IPD. Active only while salary is credited.</p><span class="tag">All variants</span></div>
+      <div class="perk reveal"><div class="ic" style="background:var(--gold-bg);color:var(--gold)"><svg><use href="#i-wallet"/></svg></div><h3>Salary overdraft</h3><p>Emergency OD of 1 / 2 / 3 months' net salary (₹50 K / ₹1 L / ₹2 L); Premium gets 4&times; net salary up to ₹4 L, to be liquidated in 60 days. One salary credit is mandatory; max 2 occasions a year.</p><span class="tag">All variants</span></div>
+      <div class="perk reveal"><div class="ic" style="background:var(--plat-bg);color:var(--plat)"><svg><use href="#i-family"/></svg></div><h3>Family accounts at zero balance</h3><p>Free zero-balance family accounts for spouse + 1 child (Gold), spouse + 2 children (Diamond &amp; Platinum), or up to 4 members including parents and siblings (Premium).</p><span class="tag">Cross-sell</span></div>
+      <div class="perk reveal"><div class="ic" style="background:var(--dia-bg);color:var(--dia)"><svg><use href="#i-pct"/></svg></div><h3>Loan concessions</h3><p>Up to 100% processing-fee concession. Platinum gets 0.05% off home and 0.10% off vehicle, mortgage, personal &amp; study-abroad education loan rates. Premium gets 0.10% home, 0.15% vehicle, 0.25% study-abroad education, 0.10% mortgage &amp; personal.</p><span class="tag">Never below benchmark rate</span></div>
+      <div class="perk reveal"><div class="ic" style="background:#fde6f0;color:#c0306b"><svg><use href="#i-card"/></svg></div><h3>Premium cards</h3><p>Debit card issue and AMC free in Diamond and Platinum (Gold: charges apply). Credit card issuance free; AMC waiver 25% / 50% / 100%.</p><span class="tag">Subject to bureau &amp; eligibility</span></div>
+      <div class="perk reveal"><div class="ic" style="background:var(--sky);color:var(--navy2)"><svg><use href="#i-bolt"/></svg></div><h3>Digital banking, free</h3><p>Internet &amp; mobile banking, standing instructions, stop payment, utility bills and e-statements are free for all. NEFT, RTGS, IMPS and SMS are free in Diamond &amp; Platinum.</p><span class="tag">Gold: fund transfers charged</span></div>
+      <div class="perk reveal"><div class="ic" style="background:var(--prem-bg);color:var(--prem)"><svg><use href="#i-shield"/></svg></div><h3>Cyber insurance &amp; hospital cash</h3><p>Premium customers get free cyber cover up to ₹1.25 lakh a year (theft of funds, identity theft, extortion, online shopping) and hospital cash of ₹3,000/day up to ₹30,000 a year.</p><span class="tag">IOB Premium</span></div>
+      <div class="perk reveal"><div class="ic" style="background:var(--warn-bg);color:var(--warn)"><svg><use href="#i-home"/></svg></div><h3>Locker benefits</h3><p>Unlimited free locker operations with 10% / 15% / 25% rent waiver. Free outstation-cheque instant credit up to ₹15 K / ₹25 K / ₹30 K.</p><span class="tag">All variants</span></div>
+    </div>
+
+    <div class="life reveal" style="margin-top:34px">
+      <div>
+        <span class="pill">Diamond &amp; Platinum &middot; RuPay Select debit card</span>
+        <h2>Lifestyle benefits that Gold doesn't have</h2>
+        <p style="opacity:.9;margin:0">Position these when a Gold customer is close to the ₹50,000 band, or a Diamond customer is upgrading.</p>
+        <ul>
+          <li><b>Gym</b>15 days / 1 month free; 40&ndash;50% off extension</li>
+          <li><b>Golf</b>1 free lesson/round a year; discounts from 2nd visit</li>
+          <li><b>Spa</b>1 free session a year; 40&ndash;50% off more</li>
+          <li><b>Health check-up</b>1 free premium package a year</li>
+        </ul>
+      </div>
+      <svg viewBox="0 0 360 260" aria-hidden="true" style="width:100%;height:auto">
+        <circle cx="180" cy="130" r="110" fill="#fff" opacity=".08"/>
+        <g class="float"><circle cx="90" cy="90" r="44" fill="#fff" opacity=".16"/><svg x="62" y="62" width="56" height="56" style="color:#fff"><use href="#i-run"/></svg></g>
+        <g class="float b"><circle cx="268" cy="80" r="40" fill="#fff" opacity=".16"/><svg x="242" y="54" width="52" height="52" style="color:#fff"><use href="#i-golf"/></svg></g>
+        <g class="float c"><circle cx="100" cy="190" r="40" fill="#fff" opacity=".16"/><svg x="74" y="164" width="52" height="52" style="color:#fff"><use href="#i-spa"/></svg></g>
+        <g class="float"><circle cx="262" cy="188" r="44" fill="#fff" opacity=".16"/><svg x="234" y="160" width="56" height="56" style="color:#fff"><use href="#i-heart"/></svg></g>
+        <rect x="140" y="105" width="80" height="50" rx="8" fill="#fff"/><rect x="140" y="116" width="80" height="9" fill="#6a4fd6"/><rect x="148" y="134" width="18" height="12" rx="2" fill="#ffd166"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- RULES -->
+<section id="rules">
+  <div class="wrap">
+    <div class="eyebrow reveal">Operating instructions</div>
+    <h2 class="sec-title reveal">Rules every branch must follow</h2>
+    <p class="sec-sub reveal">Aligned with the IOB website Salary Account page (updated 19.10.2026), which takes precedence over the 2023 circulars where they differ.</p>
+    <div class="rules">
+      <div class="rule reveal"><div class="n">1</div><div><h3>Salary mandate is required</h3><p>A mandate from the employer for crediting salary into the IOB Salary Account is required at opening.</p></div></div>
+      <div class="rule reveal"><div class="n">2</div><div><h3>PAI cover needs salary credit</h3><p>Gold, Diamond and Platinum: cover is activated when salary is credited and continues while regular credit continues. <b>IOB Premium:</b> cover and other insurance benefits are activated only after salary credit for 3 consecutive months, then regular credits, and cease on retirement, switch, or 2 months of non-credit.</p></div></div>
+      <div class="rule reveal"><div class="n">3</div><div><h3>Retirement / switch / no credit for 2 months</h3><p>On retirement, switching organisation, or non-credit of salary for two consecutive months, the account migrates to regular SB Public. The customer maintains the SB Public minimum balance, all free facilities and concessions are withdrawn, and the branch takes recovery measures where necessary.</p></div></div>
+      <div class="rule reveal"><div class="n">4</div><div><h3>No flexi (sweep) deposit</h3><p>Flexi deposit is not available in Gold, Diamond or Platinum. Existing FFDs created under old salary schemes run off until maturity.</p></div></div>
+      <div class="rule reveal"><div class="n">5</div><div><h3>Portability after one year</h3><p>Moving between Gold, Diamond and Platinum is allowed only after one year from account opening. Existing customers keep the same account number.</p></div></div>
+      <div class="rule reveal"><div class="n">6</div><div><h3>Debit card variants</h3><p>Customers may choose any variant, but free issuance/AMC applies only to the approved variant or lower. A higher variant is charged unless the required balance is maintained.</p></div></div>
+      <div class="rule reveal"><div class="n">7</div><div><h3>Loan concessions</h3><p>Concession must never push the rate below the benchmark rate. Multiple concessions are not allowed. Processing-fee concession applies only to listed retail schemes.</p></div></div>
+      <div class="rule reveal"><div class="n">8</div><div><h3>Card benefits are network-driven</h3><p>Lounge access and card-linked PAI come from NPCI / VISA / RuPay and may change. RuPay insurance needs a POS/Ecom transaction once in 30 days. Refer customers to the provider's website.</p></div></div>
+      <div class="rule reveal"><div class="n">9</div><div><h3>Overdraft conditions</h3><p>Only in an emergency; one salary credit is mandatory; max 2 occasions in a calendar year.</p></div></div>
+      <div class="rule reveal"><div class="n">10</div><div><h3>Explain before opening</h3><p>Branch heads must sensitise staff and ensure scheme details, including the retirement/non-credit rule and Gold charges, are explained to customers before the account is opened.</p></div></div>
+      <div class="rule reveal"><div class="n">11</div><div><h3>IOB Premium: confirmed employees only</h3><p>Net monthly salary credit above ₹1.50 lakh (average of last 3 months), confirmed in service. Collect salary slip and appointment letter along with standard documents. Excludes armed forces and police for the PAI cover.</p></div></div>
+    </div>
+    <div class="alert reveal"><svg><use href="#i-warn"/></svg><div><b>Circular Dep/15/2025-26 (18.09.2025):</b> IOB Premium is operational from 18.09.2025. The revised Gold/Diamond/Platinum features are effective <b>01.11.2025</b>, after one month's notice to existing customers; branches should display them on notice boards. <b>What changed since the 2023 circulars:</b> bands are now on <b>net</b> salary (Gold up to ₹25,000, Diamond up to ₹75,000, Platinum up to ₹1,50,000); the non-credit trigger is <b>2 months</b>, not 3; Gold now pays card and fund-transfer charges; own-bank ATM is 10 free txns; loan-rate concessions are Platinum-only; free hospital cash is added.</div></div>
+  </div>
+</section>
+
+<!-- LIFECYCLE -->
+<section style="background:var(--sky)">
+  <div class="wrap">
+    <div class="eyebrow reveal">Account journey</div>
+    <h2 class="sec-title reveal">From canvassing to conversion</h2>
+    <p class="sec-sub reveal">A simple checklist for branches handling a salary account from first conversation to year-end.</p>
+    <div class="flow">
+      <div class="step reveal"><h3>Identify</h3><p>Confirm employer type, age 18&ndash;65 and avg. net salary of last 3 months.</p></div>
+      <div class="step reveal"><h3>Match variant</h3><p>Gold, Diamond or Platinum by salary band. Explain the lifestyle perks and cards.</p></div>
+      <div class="step reveal"><h3>Open &amp; mandate</h3><p>Obtain the employer salary mandate. Offer family accounts and alias name.</p></div>
+      <div class="step reveal"><h3>Activate</h3><p>Salary credit activates PAI cover. Guide customer on card, OD and digital banking.</p></div>
+      <div class="step reveal"><h3>Review yearly</h3><p>After 1 year, offer upgrade. If salary stops for 2 months, migrate to SB Public.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MIGRATION -->
+<section id="migrate">
+  <div class="wrap">
+    <div class="eyebrow reveal">What changed</div>
+    <h2 class="sec-title reveal">Old schemes &rarr; revamped schemes</h2>
+    <p class="sec-sub reveal">Five salary schemes are now one, plus two new higher variants. The wider revamp merged several other savings schemes too.</p>
+    <div class="mig">
+      <div class="m reveal" style="grid-column:1/-1"><div class="arrow" style="margin-bottom:10px">Five old salary schemes &darr; merged into <b>IOB Salary Gold (SBCRP)</b></div>
+        <table style="min-width:0;font-size:.9rem"><thead><tr><th style="background:var(--navy2)">Code</th><th style="background:var(--navy2)">Old scheme</th><th style="background:var(--navy2)">Note</th></tr></thead><tbody>
+          <tr><td><b>SBCRP</b></td><td>SB Corporate Salary</td><td>Continues as IOB Salary Gold</td></tr>
+          <tr><td><b>SBCOR</b></td><td>IOB Corp (AQB up to ₹50,000)</td><td>Merged into Gold</td></tr>
+          <tr><td><b>SBPRM</b></td><td>IOB Corp Premium / SB Premium (AQB ₹50,001 and above)</td><td>Merged into Gold. Its flexi (sweep) deposit is discontinued; existing FFDs run off till maturity</td></tr>
+          <tr><td><b>SBDNC</b></td><td>SB Defence Salary, non-commissioned</td><td>Merged into Gold</td></tr>
+          <tr><td><b>SBDCM</b></td><td>SB Defence Salary, commissioned</td><td>Merged into Gold. Flexi deposit discontinued; existing FFDs run off</td></tr>
+        </tbody></table>
+        <p style="color:var(--muted);margin:10px 0 0;font-size:.85rem">Existing customers keep their account number and can be moved to a higher variant (Diamond / Platinum) based on net salary, subject to the one-year portability rule.</p></div>
+      <div class="m reveal"><div class="from"><span>NEW 2025</span></div><div class="arrow">&darr; introduced 18.09.2025</div><h3>IOB Premium <small>(SBCSP)</small></h3><p style="color:var(--muted);margin:6px 0 0;font-size:.9rem">Corporate salary scheme for net salary above ₹1.5 lakh. Not the same as the old SBPRM (IOB Corp Premium), which was merged into Gold in 2023.</p></div>
+      <div class="m reveal"><div class="from"><span>NEW</span></div><div class="arrow">&darr; introduced</div><h3>IOB Salary Diamond &amp; Platinum <small>(SBDMD, SBPTM)</small></h3><p style="color:var(--muted);margin:6px 0 0;font-size:.9rem">Higher variants by net salary, with industry-best features. Flexi deposit not available.</p></div>
+      <div class="m reveal"><div class="from"><span>SBSLO</span><span>SBSLT</span><span>SBPLT</span><span>SBARO</span><span>SBTRN</span></div><div class="arrow">&darr; merged into</div><h3>IOB SB Max <small>(SBSLT)</small></h3><p style="color:var(--muted);margin:6px 0 0;font-size:.9rem">Flexi threshold ₹50,000. Salary customers who don't fit the salary package can be pointed here.</p></div>
+      <div class="m reveal"><div class="from"><span>SBGLO</span><span>SBGLT</span></div><div class="arrow">&darr; merged into</div><h3>IOB SB HNI <small>(SBGLT)</small></h3><p style="color:var(--muted);margin:6px 0 0;font-size:.9rem">Also offers "My Account My Name" alongside the Salary Account.</p></div>
+      <div class="m reveal"><div class="from"><span>SBSTU</span><span>SBLTS</span></div><div class="arrow">&darr; merged into</div><h3>IOB Super Star <small>(SBLTS)</small></h3><p style="color:var(--muted);margin:6px 0 0;font-size:.9rem">Student accounts of customers over 25 move to SB Public.</p></div>
+      <div class="m reveal"><div class="from"><span>New</span></div><div class="arrow">&darr; also introduced</div><h3>Pensioner I &amp; II, Govt &amp; Institutional</h3><p style="color:var(--muted);margin:6px 0 0;font-size:.9rem">SBPSO, SBPST and SBGOV; Eighty Plus revamped into Sixty Plus (SBEPL).</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CIRCULARS -->
+<section id="circulars" style="background:var(--sky)">
+  <div class="wrap">
+    <div class="eyebrow reveal">Source documents</div>
+    <h2 class="sec-title reveal">Circular library</h2>
+    <p class="sec-sub reveal">The website page is the latest reference. The 2023 circulars give background (merger, rules, other schemes) but their salary figures have been changed. The 2018 circular is for legacy reference only.</p>
+    <div class="circs">
+      <article class="circ reveal">
+        <div class="doc"><svg width="74" height="74" style="color:var(--prem)"><use href="#i-card"/></svg></div>
+        <div class="body"><span class="status cur">Current</span><span class="ref">Dep/15/2025-26 &middot; 18.09.2025 &middot; Planning Dept.</span><h3>IOB PREMIUM &amp; Revised Gold / Diamond / Platinum</h3><p>Introduces IOB Premium (SBCSP), net-salary bands, free hospital cash, and the revised charges and ATM limits. Source PDF is not bundled here because it carries a per-user confidentiality watermark; add a clean copy to <code>circulars/</code> to link it.</p></div>
+      </article>
+      <article class="circ reveal">
+        <div class="doc"><svg width="74" height="74" style="color:var(--ok)"><use href="#i-bolt"/></svg></div>
+        <div class="body"><span class="status cur">Current</span><span class="ref">iob.bank.in &middot; updated 19.10.2026</span><h3>IOB Website: Salary Account</h3><p>Latest published bands (net salary), charges and exit rule. Takes precedence over the circulars below.</p><a class="btn blue" href="https://www.iob.bank.in/en/salary-account" target="_blank" rel="noopener">Open web page</a></div>
+      </article>
+      <article class="circ reveal">
+        <div class="doc"><svg width="74" height="74" style="color:var(--navy2)"><use href="#i-doc"/></svg></div>
+        <div class="body"><span class="status old">Partly superseded</span><span class="ref">Dep/2/2023-24 &middot; 09.06.2023 &middot; Planning Dept.</span><h3>Revamping Savings Account Schemes</h3><p>Merges schemes, introduces IOB Salary Gold/Diamond/Platinum, My Account My Name, PAI, lounge and concession rules. Annexure-1 has the salary features.</p><span class="btn blue" style="opacity:.55;cursor:default">PDF shared internally</span></div>
+      </article>
+      <article class="circ reveal">
+        <div class="doc"><svg width="74" height="74" style="color:var(--dia)"><use href="#i-tag"/></svg></div>
+        <div class="body"><span class="status old">Partly superseded</span><span class="ref">MISC/10/2023-24 &middot; 08.08.2023 &middot; Banking Operations</span><h3>Service Charges for Revamped Accounts</h3><p>Charges and concessions for the revamped saving &amp; current schemes, including salary cards, ATM, NEFT/RTGS/IMPS, locker, DD and processing fees.</p><span class="btn blue" style="opacity:.55;cursor:default">PDF shared internally</span></div>
+      </article>
+      <article class="circ reveal">
+        <div class="doc"><svg width="74" height="74" style="color:var(--ok)"><use href="#i-shield"/></svg></div>
+        <div class="body"><span class="status old">Partly superseded</span><span class="ref">Dep/4/2023-24 &middot; 21.10.2023 &middot; Planning Dept.</span><h3>Clarification on SB Salary Accounts</h3><p>PAI activates only on salary credit. The 3-month non-credit rule here is now 2 months per the website.</p><button class="btn blue" id="openClar">View circular</button></div>
+      </article>
+      <article class="circ reveal">
+        <div class="doc"><svg width="74" height="74" style="color:var(--warn)"><use href="#i-doc"/></svg></div>
+        <div class="body"><span class="status old">Superseded</span><span class="ref">DEP/2017-18 &middot; 12.02.2018 &middot; Marketing &amp; Development</span><h3>IOB Corp &amp; IOB Premium Corp</h3><p>Earlier corporate salary products, now merged into IOB Salary Gold. Kept for reference when handling legacy accounts.</p><span class="btn blue" style="opacity:.55;cursor:default">PDF shared internally</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap" style="max-width:860px">
+    <div class="eyebrow reveal">Staff FAQ</div>
+    <h2 class="sec-title reveal" style="margin-bottom:24px">Questions branches ask</h2>
+    <details class="reveal"><summary>Customer's net salary is ₹30,000 &mdash; which variant?</summary><p>Diamond (above ₹25,000 up to ₹75,000). The tier is based on the average net salary of the last 3 months. Up to ₹25,000 is Gold; above ₹75,000 up to ₹1,50,000 is Platinum.</p></details>
+    <details class="reveal"><summary>Who qualifies for IOB Premium (SBCSP)?</summary><p>Confirmed employees of Government organisations, PSUs, MNCs, reputed corporates and institutions (including educational institutions, hospitals, hotels, transport corporations) with an average net monthly salary credit above ₹1.50 lakh over the last 3 months, aged 18&ndash;65. Collect the salary slip and appointment letter with the usual documents.</p></details>
+    <details class="reveal"><summary>Is IOB Premium the same as the old SB Premium / SBPRM?</summary><p>No. SBPRM (IOB Corp Premium) was merged into Gold in 2023. IOB Premium (SBCSP) is a new scheme launched 18.09.2025 with ₹100 lakh accident cover, hospital cash, cyber insurance and a 4&times; salary overdraft.</p></details>
+    <details class="reveal"><summary>Is there a minimum balance?</summary><p>No. Minimum balance is Nil in all three variants. After migration to SB Public, that scheme's minimum balance applies.</p></details>
+    <details class="reveal"><summary>What happens if salary stops coming?</summary><p>If salary is not credited for 2 consecutive months, or on retirement or switching organisations, the account migrates to regular SB Public. The customer must maintain the SB Public minimum balance, all free facilities and concessions are withdrawn, and the branch takes recovery measures where necessary.</p></details>
+    <details class="reveal"><summary>Can a customer have flexi (sweep-in/out) deposit?</summary><p>No. Flexi deposit is not available in the three salary variants. Customers who want it can be guided to a scheme where it is available. Existing FFDs run off until maturity.</p></details>
+    <details class="reveal"><summary>Does the free accident cover apply to everyone?</summary><p>Yes (armed forces and police are excluded for Premium). Cover is ₹20 L / ₹30 L / ₹40 L (Death + PPD &amp; TPD) with the account. Debit-card insurance via NPCI is separate: ₹2 L (Gold, RuPay Platinum) or ₹10 L (Diamond/Platinum, RuPay Select), subject to a POS/Ecom transaction once in 30 days.</p></details>
+    <details class="reveal"><summary>Who gets "My Account My Name"?</summary><p>IOB Salary Account and SB HNI customers. After opening, the customer logs in on the bank's website, enters the 15-digit account number, validates with an OTP on the registered mobile, then chooses a unique alias.</p></details>
+    <details class="reveal"><summary>Can concessions be combined?</summary><p>No. Multiple concessions are not allowed, and a concession must never bring the retail loan rate below the benchmark rate. Rate concessions apply to Platinum only.</p></details>
+    <details class="reveal"><summary>Which loans get a processing-fee concession?</summary><p>Home loans, plus retail schemes CCROY, DLCLN, CCCLN, RPLHI, RPLOT, RROYL, RPUSH and CCLAP/RHNIL.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><img src="assets/iob-logo.svg" alt="Indian Overseas Bank" style="height:46px;margin-bottom:10px;display:block"><b style="color:#fff">IOB Salary Accounts Portal</b><br>For internal circulation to Branches / Regional Offices / Other Offices only. Not for display to customers.</div>
+    <div>Salary figures per circular Dep/15/2025-26 and the IOB website (19.10.2026); background from circulars Dep/2/2023-24, MISC/10/2023-24, Dep/4/2023-24.</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lb" role="dialog" aria-label="Clarification circular"><button class="btn gold" id="lbx">Close &times;</button><img src="circulars/clarification-dep-4-2023-24.png" alt="Circular Dep/4/2023-24 Clarification on SB Salary Accounts"></div>
+
+<script>
+const T=(g,d,p,x)=>({g,d,p,x});
+const Q=(a,x)=>T(a,a,a,x);
+const S=v=>({all:v});
+const NS="Not specified in circular";
+const DATA=[
+ ["Eligibility & basics",[
+  ["Who is eligible",S("Regular employees of Central/State Govt, PSU, Govt-Semi Govt corporations, MNCs, reputed institutions, corporates & educational institutions. Salary mandate required. Premium: confirmed in service, drawing regular salary.")],
+  ["Age",S("18 to 65 years")],
+  ["Net salary (avg. of last 3 months)",T("₹10,000 up to ₹25,000","Above ₹25,000 up to ₹75,000","Above ₹75,000 up to ₹1,50,000","Above ₹1,50,000")],
+  ["Minimum balance",S("Nil")],
+  ["Zero-balance family accounts",T("Spouse + 1 child","Spouse + 2 children","Spouse + 2 children","Up to 4 members (parents, spouse, children & siblings), SB Public")],
+  ["Joint account with spouse",Q("Yes",NS)],
+  ["Portability",Q("Between Gold, Diamond and Platinum, only after one year of account opening",NS)],
+  ["Documents",Q("As per extant savings-account guidelines","As per guidelines; preferably latest salary slip, appointment letter etc.")],
+ ]],
+ ["Cards & limits",[
+  ["Debit card type",T("VISA Platinum / RuPay Platinum","VISA Signature / RuPay Select","VISA Signature / RuPay Select","Highest variant in bank: at present VISA Signature / RuPay Select / Mastercard World")],
+  ["Debit card issue charge",T("Applicable charges collected","Free","Free","Free")],
+  ["Debit card annual maintenance",T("Applicable charges collected","Free","Free","Free")],
+  ["ATM cash withdrawal limit",T("₹50,000 per day","₹1,00,000/day (VISA Signature) · ₹50,000 (RuPay Select)","₹1,00,000/day (VISA Signature) · ₹50,000 (RuPay Select)","VISA Signature ₹1,00,000 · RuPay Select ₹50,000 · Mastercard World ₹1,00,000 per day")],
+  ["POS limit",T("₹2,00,000/day (VISA Platinum) · ₹1,25,000 (RuPay Platinum)","₹3,50,000/day (VISA Signature) · ₹5,00,000 (RuPay Select)","₹3,50,000/day (VISA Signature) · ₹5,00,000 (RuPay Select)","VISA Signature ₹3,50,000 · RuPay Select ₹5,00,000 · Mastercard World ₹3,50,000 per day")],
+  ["E-commerce limit",T("Not listed on website","₹3,50,000 per day","₹3,50,000 per day","₹3,50,000 per day (VISA Signature / RuPay Select / Mastercard World)")],
+  ["Own-bank ATM use",T("10 free transactions per month","10 free transactions per month","10 free transactions per month","15 free transactions per month")],
+  ["Other-bank ATM use",T("3 txns/month at Metro or 5 at other centres (financial + non-financial)","3 txns/month at Metro or 5 at other centres (financial + non-financial)","10 free transactions per month","10 free transactions per month")],
+  ["Airport lounge (domestic / international)",S("As per eligibility of the card network, subject to change. Presently RuPay (Platinum/Select): 2 per quarter; VISA (Platinum/Signature): 1 per quarter")],
+  ["Credit card (subject to bureau score, income norms & eligibility)",T("Free issuance · AMC 25% waiver","Free issuance · AMC 50% waiver","Free issuance & AMC","Free issuance & AMC")],
+ ]],
+ ["Insurance",[
+  ["Free personal accident insurance with account (except armed forces & police for Premium)",T("₹20 lakh (Death + PPD & TPD)","₹30 lakh (Death + PPD & TPD)","₹40 lakh (Death + PPD & TPD)","₹100 lakh (Death + TPD) with air accident cover")],
+  ["Accident insurance with debit card (NPCI)",T("₹2 lakh for RuPay Platinum","₹10 lakh for RuPay Select","₹10 lakh for RuPay Select","₹10 lakh for RuPay Select")],
+  ["Debit-card cover condition",S("Per NPCI terms, card must be used in a POS/Ecom transaction once in 30 days")],
+  ["When account cover is activated",Q("Activated when salary is credited and continues while salary credit continues","Only after salary credit for 3 consecutive months, then regular credits. Ceases on retirement, switch of organisation or 2 months' non-credit")],
+  ["Free hospital cash (mediclaim) for IPD",T("Available (details shared separately)","Available (details shared separately)","Available (details shared separately)","₹3,000 per day, up to ₹30,000 a year (max 10 days)")],
+  ["Free cyber insurance",Q("Not available","Max ₹1.25 lakh a year: theft of funds, identity theft, cyber extortion, online shopping (sub-limit ₹25,000)")],
+ ]],
+ ["Everyday banking",[
+  ["Internet & mobile banking",S("Free")],
+  ["NEFT",T("Applicable charges collected","Free","Free","Free")],
+  ["RTGS",T("Applicable charges collected","Free","Free","Free")],
+  ["IMPS",T("Applicable charges collected","Free","Free","Free")],
+  ["SMS alerts",T("Applicable charges collected","Free","Free","Free")],
+  ["Standing instructions",S("Free")],
+  ["Stop payment instruction",S("Free")],
+  ["Utility bill payment, online tax payment",S("Free")],
+  ["E-statement by email (monthly)",S("Free")],
+  ["Personalised cheque book",T("40 leaves free per year","60 leaves free per year","100 leaves free per year","Up to 100 leaves free per year; delivery charges waived")],
+  ["Demand drafts",T("2 DDs free per month, up to preceding quarter's average balance","Free unlimited, up to preceding quarter's average balance","Free unlimited, up to preceding quarter's average balance","100% concession on 2 DDs a month up to ₹2 lakh value, max concession ₹1,000 a month")],
+  ["Instant credit of outstation cheques",T("₹15,000","₹25,000","₹30,000",NS)],
+  ["Doorstep banking",Q(NS,"3 free per quarter through the DSB provider, where available")],
+  ["Demat account",Q(NS,"No registration charges; no maintenance charges for 1st year")],
+ ]],
+ ["Overdraft",[
+  ["Temporary overdraft in emergency",T("1 month net salary, up to ₹50,000","2 months net salary, up to ₹1 lakh","3 months net salary, up to ₹2 lakh","4 times the net salary credited, up to ₹4 lakh. Liquidate within 60 days before any 2nd OD request")],
+  ["Overdraft conditions",S("One salary credit is mandatory; maximum 2 occasions in a calendar year")],
+ ]],
+ ["Loans & concessions",[
+  ["Processing fee: home loan ₹25 L and above",S("100% concession")],
+  ["Processing fee: home loan below ₹25 L",T("50% concession","75% concession","100% concession","100% concession")],
+  ["Processing fee: eligible retail loans (other than home)",T("50% concession","75% concession","100% concession","100% concession")],
+  ["Home loan interest rate",T("No concession on rate","No concession on rate","0.05% p.a. concession in applicable ROI","0.10% p.a. concession in applicable ROI")],
+  ["Vehicle loan interest rate",T("No concession on rate","No concession on rate","0.10% p.a. concession in applicable ROI","0.15% p.a. concession in applicable ROI")],
+  ["Education loan above ₹7.5 L (study abroad)",T("No concession on rate","No concession on rate","0.10% p.a. concession in applicable ROI","0.25% p.a. concession in applicable ROI")],
+  ["Mortgage loan interest rate",T("No concession on rate","No concession on rate","0.10% p.a. concession in applicable ROI","0.10% p.a. concession in applicable ROI")],
+  ["Personal loan interest rate",T("No concession on rate","No concession on rate","0.10% p.a. concession in applicable ROI","0.10% p.a. concession in applicable ROI")],
+  ["Rule on concessions",S("Rate never below benchmark (RLLR/MCLR). Multiple concessions are not allowed.")],
+ ]],
+ ["Locker",[
+  ["Locker operations",S("Unlimited free")],
+  ["Locker rent concession",T("10% waiver","15% waiver","25% waiver","100% waiver (max ₹2,000) in 1st year; 50% waiver (max ₹1,000) from 2nd year")],
+ ]],
+ ["Lifestyle (RuPay Select card)",[
+  ["Gym",T("Nil","15 days / 1 month free; 40–50% off on extension","15 days / 1 month free; 40–50% off on extension",NS)],
+  ["Golf",T("Nil","1 complimentary lesson/round a year; discounted from 2nd visit","1 complimentary lesson/round a year; discounted from 2nd visit",NS)],
+  ["Spa",T("Nil","1 complimentary session a year; 40–50% off additional sessions","1 complimentary session a year; 40–50% off additional sessions",NS)],
+  ["Health check-up",T("Nil","1 complimentary premium package a year; discounted thereafter","1 complimentary premium package a year; discounted thereafter",NS)],
+  ["Exclusive merchant offers",T("Nil","Offers from selected partner merchants","Offers from selected partner merchants",NS)],
+ ]],
+ ["Exit rule",[
+  ["On retirement, switch to another organisation, or non-credit of salary for 2 consecutive months",S("Account migrates to regular SB Public (automatically converted by the system); customer maintains SB Public minimum balance; all free facilities/concessions withdrawn; branch takes recovery measures where necessary")],
+ ]],
+];
+const tabsEl=document.getElementById('tabs'),tb=document.querySelector('#tbl tbody'),q=document.getElementById('q');
+let cat='All',focus=null;
+const cats=['All',...DATA.map(d=>d[0])];
+const SHORT={ 'Eligibility & basics':'Eligibility','Cards & limits':'Cards','Everyday banking':'Banking','Loans & concessions':'Loans','Lifestyle (RuPay Select card)':'Lifestyle','Exit rule':'Exit rule'};
+cats.forEach(c=>{const b=document.createElement('button');b.className='tab'+(c==='All'?' on':'');b.textContent=SHORT[c]||c;b.onclick=()=>{cat=c;[...tabsEl.children].forEach(x=>x.classList.toggle('on',x===b));render()};tabsEl.appendChild(b)});
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function hl(s,t){s=esc(s);if(!t)return s;const r=new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');return s.replace(r,'<mark>$1</mark>')}
+function render(){
+  const t=q.value.trim().toLowerCase();let html='',n=0;
+  DATA.forEach(([c,rows])=>{
+    if(cat!=='All'&&cat!==c)return;
+    const m=rows.filter(([f,v])=>!t||(f+' '+Object.values(v).join(' ')).toLowerCase().includes(t));
+    if(!m.length)return;
+    html+=`<tr class="cat"><td colspan="5">${esc(c)}</td></tr>`;
+    m.forEach(([f,v])=>{n++;
+      html+=`<tr><td class="f">${hl(f,t)}</td>`+(v.all!==undefined?`<td class="span" colspan="4">${hl(v.all,t)}</td>`:['g','d','p','x'].map(k=>`<td class="${v[k]==='Nil'||v[k]===NS?'na':''}">${hl(v[k],t)}</td>`).join(''))+'</tr>';
+    });
+  });
+  tb.innerHTML=html||`<tr><td colspan="5" class="empty">No features match "${esc(q.value)}".</td></tr>`;
+  document.querySelectorAll('thead th').forEach((th,i)=>th.style.opacity=(focus&&i>0&&['g','d','p','x'][i-1]!==focus)?.45:1);
+}
+q.addEventListener('input',render);render();
+document.querySelectorAll('[data-tier]').forEach(b=>b.onclick=()=>{focus=b.dataset.tier;cat='All';q.value='';[...tabsEl.children].forEach((x,i)=>x.classList.toggle('on',i===0));render();document.getElementById('compare').scrollIntoView()});
+
+// finder
+const sal=document.getElementById('sal'),sl=document.getElementById('slider'),res=document.getElementById('result');
+const inr=n=>'₹'+Number(n).toLocaleString('en-IN');
+const TI={
+ g:{n:'Gold',code:'SBCRP',bg:'linear-gradient(135deg,#ffe9a8,#f3c14f)',chips:['VISA/RuPay Platinum card (charges apply)','₹20 L accident cover','Free hospital cash','OD up to ₹50,000','Family: spouse + 1 child','50% processing-fee concession','10% locker rent waiver'],next:25001,nx:'Diamond'},
+ d:{n:'Diamond',code:'SBDMD',bg:'linear-gradient(135deg,#bfe7ff,#6fc0ef)',chips:['VISA Signature / RuPay Select','₹30 L accident cover','OD up to ₹1 lakh','Family: spouse + 2 children','75% processing-fee concession','Free NEFT/RTGS/IMPS & SMS','Gym, golf, spa, health check-up','15% locker rent waiver'],next:75001,nx:'Platinum'},
+ p:{n:'Platinum',code:'SBPTM',bg:'linear-gradient(135deg,#d9d0ff,#9b86f2)',chips:['VISA Signature / RuPay Select','₹40 L accident cover','OD up to ₹2 lakh','10 free other-bank ATM txns','Free credit card issuance & AMC','100 free cheque leaves','100% processing-fee concession','Loan rate concession 0.05–0.10%','25% locker rent waiver'],next:150001,nx:'IOB Premium'},
+ x:{n:'Premium',code:'SBCSP',bg:'linear-gradient(135deg,#475569,#0f172a)',chips:['₹100 L accident cover incl. air accident','Hospital cash ₹3,000/day','Cyber insurance ₹1.25 L','OD 4× net salary up to ₹4 L','Highest-variant debit card free','15 own / 10 other-bank ATM txns','Family accounts up to 4 members','Doorstep banking','100% processing-fee concession','Loan rate up to 0.25% off','Locker rent 100% waiver in year 1'],next:null,nx:''}
+};
+function find(v){
+  v=Number(v)||0;
+  if(v<10000){res.style.background='var(--warn-bg)';res.innerHTML=`<div class="chip">Below salary-package band</div><h3>Not eligible for IOB Salary Account</h3><p>Minimum average net salary is ₹10,000. Consider <b>IOB SB Max</b> or another savings scheme.</p>`;return}
+  const k=v>150000?'x':v>75000?'p':v>25000?'d':'g',t=TI[k];
+  res.style.background=t.bg;res.style.color=k==='x'?'#fff':'#1c2540';
+  const nudge=t.next?`<div class="nudge">${inr(t.next-v)} more net salary per month moves this customer to ${t.nx}.</div>`:`<div class="nudge">Highest variant &mdash; the most benefits in the package.</div>`;
+  res.innerHTML=`<span class="chip">${t.code}</span><h3>${k==='x'?'IOB Premium':'IOB Salary '+t.n}</h3><div class="chips">${t.chips.map(c=>`<span class="chip">${c}</span>`).join('')}</div>${nudge}<button class="btn blue" style="margin-top:12px" data-jump="${k}">See ${t.n} in comparison</button>`;
+  res.querySelector('[data-jump]').onclick=()=>{focus=k;cat='All';q.value='';[...tabsEl.children].forEach((x,i)=>x.classList.toggle('on',i===0));render();document.getElementById('compare').scrollIntoView()};
+}
+sal.oninput=()=>{sl.value=Math.min(sal.value,200000);find(sal.value)};
+sl.oninput=()=>{sal.value=sl.value;find(sl.value)};find(sal.value);
+
+// lightbox
+const lb=document.getElementById('lb');
+document.getElementById('openClar').onclick=()=>lb.classList.add('on');
+document.getElementById('lbx').onclick=()=>lb.classList.remove('on');
+lb.onclick=e=>{if(e.target===lb)lb.classList.remove('on')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('on')});
+
+// reveal + nav highlight
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const links=[...document.querySelectorAll('#menu a')];
+const so=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}}),{rootMargin:'-40% 0px -55% 0px'});
+links.forEach(a=>{const s=document.querySelector(a.getAttribute('href'));if(s)so.observe(s)});
+</script>
+</body>
+</html>
