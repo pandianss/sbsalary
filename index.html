@@ -3,9 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
 <title>IOB Salary Accounts Portal</title>
 <style>
 :root{
+  color-scheme:light dark;
   --navy:#0b2a5b; --navy2:#123f86; --sky:#e8f1fb; --ink:#14213d; --muted:#5b6b86; --line:#dbe3ef; --bg:#f6f8fc; --card:#ffffff;
   --gold:#c98f12; --gold-bg:#fff6dc; --dia:#1b8bd1; --dia-bg:#e3f3fd; --plat:#6a4fd6; --plat-bg:#eee9ff;
   --prem:#0f172a; --prem-bg:#e6e9f1; --prem-th:#0f172a; --ok:#157a4b; --warn:#b4540a; --warn-bg:#fff1e3; --radius:18px;
@@ -30,7 +33,7 @@ section{padding:64px 0}
 header.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .nav .wrap{display:flex;align-items:center;gap:20px;height:64px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--navy);text-decoration:none}
-.logo{height:42px;width:auto;display:block}
+.logo{height:42px;width:auto;display:block;border-radius:8px}
 .brand small{display:block;font-weight:500;color:var(--muted);font-size:.7rem;margin-top:-2px}
 .nav nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
 .nav nav a{padding:8px 12px;border-radius:999px;text-decoration:none;font-size:.9rem;color:var(--muted);font-weight:600}
